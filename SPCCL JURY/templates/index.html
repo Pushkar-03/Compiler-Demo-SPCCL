@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
 
-    <title>MiniLang Advanced Compiler</title>
+    <title>MiniLang Compiler IDE</title>
 
     <link rel="stylesheet"
     href="{{ url_for('static', filename='style.css') }}">
@@ -14,62 +14,132 @@
 
 <body>
 
-    <div class="container">
+    <div class="main-container">
 
-        <div class="left-panel">
+        <!-- LEFT SIDE -->
+        <div class="editor-panel">
 
-            <h1>MiniLang Compiler</h1>
+            <div class="topbar">
+                <h1>MiniLang Compiler IDE</h1>
+            </div>
 
             <form method="POST">
 
                 <textarea
-                name="code"
-                placeholder="Write MiniLang code here..."
-                spellcheck="false"></textarea>
+                    name="code"
+                    spellcheck="false"
+                    placeholder="Write your MiniLang code here..."
+                >{% if request.form.code %}{{ request.form.code }}{% endif %}</textarea>
 
                 <button type="submit">
-                    COMPILE CODE
+                    ▶ RUN COMPILER
                 </button>
 
             </form>
 
         </div>
 
-        <div class="right-panel">
+        <!-- RIGHT SIDE -->
+        <div class="result-panel">
 
             {% if result %}
 
+            <!-- TOKENS -->
             <div class="card">
 
                 <h2>Tokens</h2>
 
-                <pre>{{ result.tokens }}</pre>
+                <div class="scroll-box">
+
+                    <pre>
+{% for token in result.tokens %}
+{{ token }}
+{% endfor %}
+                    </pre>
+
+                </div>
 
             </div>
 
+            <!-- VARIABLES -->
+            <div class="card">
+
+                <h2>Variables Table</h2>
+
+                <div class="scroll-box">
+
+                    <pre>{{ result.variables }}</pre>
+
+                </div>
+
+            </div>
+
+            <!-- OUTPUT WINDOW -->
+            {% if result.errors|length == 0 %}
+
+            <div class="card output-card">
+
+                <h2>Program Output</h2>
+
+                <div class="output-window">
+
+                    {% for log in result.logs %}
+
+                        {% if "OUTPUT" in log %}
+
+                            <div class="output-line">
+
+                                {{ log }}
+
+                            </div>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+            <!-- EXECUTION LOGS -->
             <div class="card">
 
                 <h2>Execution Logs</h2>
 
-                <pre>{{ result.logs }}</pre>
+                <div class="scroll-box">
+
+                    <pre>
+{% for log in result.logs %}
+{{ log }}
+{% endfor %}
+                    </pre>
+
+                </div>
 
             </div>
 
-            <div class="card">
+            <!-- ERRORS -->
+            {% if result.errors %}
 
-                <h2>Variables</h2>
+            <div class="card error-card">
 
-                <pre>{{ result.variables }}</pre>
+                <h2>Compiler Errors</h2>
+
+                <div class="scroll-box">
+
+                    <pre>
+{% for error in result.errors %}
+{{ error }}
+{% endfor %}
+                    </pre>
+
+                </div>
 
             </div>
 
-            <div class="card error">
-
-                <h2>Errors</h2>
-
-                <pre>{{ result.errors }}</pre>
-
-            </div>
+            {% endif %}
 
             {% endif %}
 
