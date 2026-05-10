@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>MiniLang Advanced Compiler</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="left-panel">
+
+            <h1>MiniLang Compiler</h1>
+
+            <form method="POST">
+
+                <textarea
+                name="code"
+                placeholder="Write MiniLang code here..."
+                spellcheck="false"></textarea>
+
+                <button type="submit">
+                    COMPILE CODE
+                </button>
+
+            </form>
+
+        </div>
+
+        <div class="right-panel">
+
+            {% if result %}
+
+            <div class="card">
+
+                <h2>Tokens</h2>
+
+                <pre>{{ result.tokens }}</pre>
+
+            </div>
+
+            <div class="card">
+
+                <h2>Execution Logs</h2>
+
+                <pre>{{ result.logs }}</pre>
+
+            </div>
+
+            <div class="card">
+
+                <h2>Variables</h2>
+
+                <pre>{{ result.variables }}</pre>
+
+            </div>
+
+            <div class="card error">
+
+                <h2>Errors</h2>
+
+                <pre>{{ result.errors }}</pre>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
